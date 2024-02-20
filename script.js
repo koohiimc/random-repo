@@ -1,5 +1,6 @@
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 document.getElementById('downloadButton').addEventListener('click', downloadImages);
+document.getElementById('darkModeToggle').addEventListener('change', toggleDarkMode);
 
 function handleFileSelect(event) {
   const files = event.target.files;
@@ -26,7 +27,7 @@ function handleFileSelect(event) {
 
         ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
+
         ctx.drawImage(img, 20, 20, img.width - 40, img.height - 40);
 
         const roundedCanvas = document.createElement('canvas');
@@ -83,4 +84,9 @@ function downloadImages() {
   zip.generateAsync({ type: 'blob' }).then(function(content) {
     saveAs(content, 'images.zip');
   });
+}
+
+function toggleDarkMode() {
+  const body = document.body;
+  body.classList.toggle('dark-mode');
 }
