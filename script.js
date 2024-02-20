@@ -5,24 +5,34 @@ const downloadAllButton = document.getElementById('download-all');
 const imageContainer = document.getElementById('image-container');
 
 function createDownloadLink(image, backgroundColor) {
-    const blob = new Blob([image], { type: image.type });
-    const url = URL.createObjectURL(blob);
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    // Create the edited image with background and rounded corners
+    context.fillStyle = backgroundColor;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0);
+
+    // Convert the canvas to a blob and create a temporary download link
+    const blob = canvas.toDataURL('image/png');
     const link = document.createElement('a');
-    link.href = url;
+    link.href = blob;
     link.download = `edited-${image.name}`;
     link.style.cssText = `
         display: none;
     `;
     document.body.appendChild(link);
     link.click();
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(link.href);
     document.body.removeChild(link);
 }
 
 applyEffectsButton.addEventListener('click', async () => {
     const backgroundColor = backgroundColorInput.value;
 
-    imageContainer.innerHTML = ''; // Clear any existing images
+    imageContainer.innerHTML = ''; // Clear existing images
 
     for (const file of imageUploader.files) {
         const reader = new FileReader();
@@ -44,3 +54,22 @@ applyEffectsButton.addEventListener('click', async () => {
                 const imageY = (canvas.height - imageHeight) / 2;
                 context.drawImage(img, imageX, imageY, imageWidth, imageHeight);
 
+                // Add rounded corners using clipping mask
+                context.beginPath();
+                context.arc(imageX + imageWidth / 2, imageY + imageHeight / 2, imageWidth / 2, 0, Math.PI * 2);
+                context.closePath();
+                context.clip();
+
+                // Create and download the edited image
+                createDownloadLink(image, backgroundColor);
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+downloadAllButton.addEventListener('click', async () => {
+    // Trigger the apply effects button click to ensure images are edited first
+    applyEffectsButton.click();
+});
