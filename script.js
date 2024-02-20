@@ -70,6 +70,8 @@ function handleFileSelect(event) {
 }
 
 function downloadImages() {
+  console.log("Download button clicked"); // Debugging
+
   const images = document.querySelectorAll('.image-wrapper img');
   const zip = new JSZip();
 
@@ -91,9 +93,14 @@ function downloadImages() {
   });
 
   zip.generateAsync({ type: 'blob' }).then(function(content) {
+    console.log("Zip generated"); // Debugging
+
     saveAs(content, 'images.zip');
+  }).catch(function(error) {
+    console.error("Error generating zip file:", error); // Debugging
   });
 }
+
 
 function toggleDarkMode() {
   const body = document.body;
