@@ -1,75 +1,86 @@
-const imageUploader = document.getElementById('image-uploader');
-const backgroundColorInput = document.getElementById('background-color');
-const applyEffectsButton = document.getElementById('apply-effects');
-const downloadAllButton = document.getElementById('download-all');
-const imageContainer = document.getElementById('image-container');
+document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+document.getElementById('downloadButton').addEventListener('click', downloadImages);
 
-function createDownloadLink(image, backgroundColor) {
+function handleFileSelect(event) {
+  const files = event.target.files;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    if (!file.type.startsWith('image/')) {
+      continue;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      const img = new Image();
+      img.src = event.target.result;
+
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.drawImage(img, 20, 20, img.width - 40, img.height - 40);
+
+        const roundedCanvas = document.createElement('canvas');
+        const roundedCtx = roundedCanvas.getContext('2d');
+        roundedCanvas.width = img.width;
+        roundedCanvas.height = img.height;
+
+        roundedCtx.beginPath();
+        roundedCtx.moveTo(20, 0);
+        roundedCtx.lineTo(canvas.width - 20, 0);
+        roundedCtx.quadraticCurveTo(canvas.width, 0, canvas.width, 20);
+        roundedCtx.lineTo(canvas.width, canvas.height - 20);
+        roundedCtx.quadraticCurveTo(canvas.width, canvas.height, canvas.width - 20, canvas.height);
+        roundedCtx.lineTo(20, canvas.height);
+        roundedCtx.quadraticCurveTo(0, canvas.height, 0, canvas.height - 20);
+        roundedCtx.lineTo(0, 20);
+        roundedCtx.quadraticCurveTo(0, 0, 20, 0);
+        roundedCtx.closePath();
+        roundedCtx.clip();
+
+        roundedCtx.drawImage(canvas, 0, 0);
+
+        const roundedImage = new Image();
+        roundedImage.src = roundedCanvas.toDataURL();
+
+        const imageWrapper = document.createElement('div');
+        imageWrapper.classList.add('image-wrapper');
+        imageWrapper.appendChild(roundedImage);
+
+        document.getElementById('imageContainer').appendChild(imageWrapper);
+      };
+    };
+
+    reader.readAsDataURL(file);
+  }
+}
+
+function downloadImages() {
+  const images = document.querySelectorAll('.image-wrapper img');
+  const zip = new JSZip();
+
+  images.forEach((image, index) => {
     const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
+
     canvas.width = image.width;
     canvas.height = image.height;
 
-    // Create the edited image with background and rounded corners
-    context.fillStyle = backgroundColor;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(image, 0, 0);
+    ctx.drawImage(image, 0, 0);
 
-    // Convert the canvas to a blob and create a temporary download link
-    const blob = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.href = blob;
-    link.download = `edited-${image.name}`;
-    link.style.cssText = `
-        display: none;
-    `;
-    document.body.appendChild(link);
-    link.click();
-    URL.revokeObjectURL(link.href);
-    document.body.removeChild(link);
+    zip.file(`image_${index + 1}.png`, canvas.toDataURL().split(',')[1], { base64: true });
+  });
+
+  zip.generateAsync({ type: 'blob' }).then(function(content) {
+    saveAs(content, 'images.zip');
+  });
 }
-
-applyEffectsButton.addEventListener('click', async () => {
-    const backgroundColor = backgroundColorInput.value;
-
-    imageContainer.innerHTML = ''; // Clear existing images
-
-    for (const file of imageUploader.files) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const img = new Image();
-            img.onload = function() {
-                // Create a canvas to edit the image
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                canvas.width = img.width;
-                canvas.height = img.height;
-
-                // Draw the image at a smaller size centered on the canvas
-                const maxImageWidth = Math.min(canvas.width * 0.8, canvas.height * 0.8);
-                const imageRatio = img.width / img.height;
-                const imageWidth = imageRatio > 1 ? maxImageWidth : maxImageWidth * imageRatio;
-                const imageHeight = imageRatio > 1 ? maxImageWidth / imageRatio : maxImageWidth;
-                const imageX = (canvas.width - imageWidth) / 2;
-                const imageY = (canvas.height - imageHeight) / 2;
-                context.drawImage(img, imageX, imageY, imageWidth, imageHeight);
-
-                // Add rounded corners using clipping mask
-                context.beginPath();
-                context.arc(imageX + imageWidth / 2, imageY + imageHeight / 2, imageWidth / 2, 0, Math.PI * 2);
-                context.closePath();
-                context.clip();
-
-                // Create and download the edited image
-                createDownloadLink(image, backgroundColor);
-            };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-downloadAllButton.addEventListener('click', async () => {
-    // Trigger the apply effects button click to ensure images are edited first
-    applyEffectsButton.click();
-});
