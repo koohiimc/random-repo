@@ -1,6 +1,7 @@
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 document.getElementById('downloadButton').addEventListener('click', downloadImages);
 document.getElementById('darkModeToggle').addEventListener('change', toggleDarkMode);
+document.getElementById('colorPicker').addEventListener('input', changeImageColor);
 
 function handleFileSelect(event) {
   const files = event.target.files;
@@ -81,7 +82,12 @@ function downloadImages() {
 
     ctx.drawImage(image, 0, 0);
 
-    zip.file(`image_${index + 1}.png`, canvas.toDataURL().split(',')[1], { base64: true });
+    const dataURL = canvas.toDataURL('image/png');
+
+    // Remove the beginning of the dataURL to get only the base64 encoded data
+    const base64Data = dataURL.split(',')[1];
+
+    zip.file(`image_${index + 1}.png`, base64Data, { base64: true });
   });
 
   zip.generateAsync({ type: 'blob' }).then(function(content) {
@@ -92,4 +98,26 @@ function downloadImages() {
 function toggleDarkMode() {
   const body = document.body;
   body.classList.toggle('dark-mode');
+}
+
+function changeImageColor() {
+  const color = document.getElementById('colorPicker').value;
+  const images = document.querySelectorAll('.image-wrapper img');
+  const container = document.querySelector('.container');
+  container.style.backgroundColor = color;
+
+  images.forEach(image => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = 'destination-atop';
+    ctx.drawImage(image, 0, 0);
+
+    image.src = canvas.toDataURL();
+  });
 }
