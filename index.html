@@ -8,21 +8,20 @@
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>Image Background Tool</h1>
-      <label class="switch">
-        <input type="checkbox" id="darkModeToggle">
-        <span class="slider"></span>
-      </label>
-    </div>
+    <h1 class="header">Image Background Tool</h1>
+    <label class="switch">
+      <input type="checkbox" id="darkModeToggle">
+      <span class="slider"></span>
+    </label>
     <input type="file" id="fileInput" multiple>
     <div id="imageContainer"></div>
     <label for="imageSize">Image Size (pixels):</label>
     <input type="number" id="imageSize" value="200">
     <button id="downloadButton">Download All Images</button>
+    <p class="watermark">Made by KoohiiMC</p>
   </div>
+  <script src="jszip.min.js"></script>
+  <script src="FileSaver.min.js"></script>
   <script src="script.js"></script>
-  <script src="libs/jszip.min.js"></script>
-  <script src="libs/FileSaver.min.js"></script>
 </body>
 </html>
