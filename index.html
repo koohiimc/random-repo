@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Editor Tool</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Background Tool</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Image Editor Tool</h1>
-    <input type="file" id="image-uploader" multiple accept=".png, .jpg, .jpeg" />
-    <label for="background-color">Background Color:</label>
-    <input type="color" id="background-color" value="#ffffff">
-    <button id="apply-effects">Apply Effects</button>
-    <button id="download-all">Download All</button>
-    <div id="image-container"></div>
-
-    <script src="script.js"></script>
+  <input type="file" id="fileInput" multiple>
+  <div id="imageContainer"></div>
+  <button id="downloadButton">Download All Images</button>
+  <script src="script.js"></script>
 </body>
 </html>
