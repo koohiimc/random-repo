@@ -22,18 +22,21 @@ function handleFileSelect(event) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = img.width;
-        canvas.height = img.height;
+        const imageSize = document.getElementById('imageSize').value;
+        const newSize = parseInt(imageSize);
+
+        canvas.width = newSize;
+        canvas.height = newSize;
 
         ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.drawImage(img, 20, 20, img.width - 40, img.height - 40);
+        ctx.drawImage(img, 20, 20, newSize - 40, newSize - 40);
 
         const roundedCanvas = document.createElement('canvas');
         const roundedCtx = roundedCanvas.getContext('2d');
-        roundedCanvas.width = img.width;
-        roundedCanvas.height = img.height;
+        roundedCanvas.width = newSize;
+        roundedCanvas.height = newSize;
 
         roundedCtx.beginPath();
         roundedCtx.moveTo(20, 0);
