@@ -1,7 +1,6 @@
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 document.getElementById('downloadButton').addEventListener('click', downloadImages);
-document.getElementById('darkModeToggle').addEventListener('change', toggleDarkMode);
-document.getElementById('colorPicker').addEventListener('input', changeBackgroundColor);
+document.getElementById('colorPicker').addEventListener('input', changeImageColor);
 
 function handleFileSelect(event) {
   const files = event.target.files;
@@ -20,21 +19,28 @@ function handleFileSelect(event) {
       img.src = event.target.result;
 
       img.onload = function() {
+        const imageSize = document.getElementById('imageSize').value;
+        const newSize = parseInt(imageSize);
+
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = img.width;
-        canvas.height = img.height;
+        canvas.width = newSize;
+        canvas.height = newSize;
 
         ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.drawImage(img, 20, 20, img.width - 40, img.height - 40);
+        const scaleFactor = newSize / Math.max(img.width, img.height);
+        const newWidth = img.width * scaleFactor;
+        const newHeight = img.height * scaleFactor;
+
+        ctx.drawImage(img, (canvas.width - newWidth) / 2, (canvas.height - newHeight) / 2, newWidth, newHeight);
 
         const roundedCanvas = document.createElement('canvas');
         const roundedCtx = roundedCanvas.getContext('2d');
-        roundedCanvas.width = img.width;
-        roundedCanvas.height = img.height;
+        roundedCanvas.width = newSize;
+        roundedCanvas.height = newSize;
 
         roundedCtx.beginPath();
         roundedCtx.moveTo(20, 0);
@@ -87,12 +93,22 @@ function downloadImages() {
   });
 }
 
-function toggleDarkMode() {
-  const body = document.body;
-  body.classList.toggle('dark-mode');
-}
-
-function changeBackgroundColor() {
+function changeImageColor() {
   const color = document.getElementById('colorPicker').value;
-  document.body.style.backgroundColor = color;
+  const images = document.querySelectorAll('.image-wrapper img');
+
+  images.forEach(image => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = 'destination-atop';
+    ctx.drawImage(image, 0, 0);
+
+    image.src = canvas.toDataURL();
+  });
 }
