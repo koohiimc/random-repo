@@ -2,58 +2,63 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #f3f3f3;
 }
 
 .container {
   max-width: 800px;
   margin: 20px auto;
-  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .header {
   color: #333;
+  text-align: center;
 }
 
-.switch {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 10px;
+.tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  background-color: #ccc;
-  border-radius: 34px;
-  transition: background-color 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  border-radius: 50%;
-  transition: transform 0.4s;
-}
-
-input:checked + .slider {
+.upload-btn {
+  padding: 10px 20px;
   background-color: #2196F3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-input:checked + .slider:before {
-  transform: translateX(26px);
+.upload-btn:hover {
+  background-color: #0b7dda;
+}
+
+input[type="color"],
+input[type="number"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#downloadButton {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#downloadButton:hover {
+  background-color: #45a049;
 }
 
 #imageContainer {
@@ -65,36 +70,20 @@ input:checked + .slider:before {
 .image-wrapper {
   margin: 10px;
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: #fff;
   border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .image-wrapper img {
   max-width: 200px;
   max-height: 200px;
   border-radius: 10px;
-}
-
-#downloadButton {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #2196F3;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#downloadButton:hover {
-  background-color: #0b7dda;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .watermark {
   margin-top: 20px;
-  color: #aaa;
+  color: #888;
+  text-align: center;
 }
