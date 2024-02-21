@@ -1,7 +1,7 @@
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 document.getElementById('downloadButton').addEventListener('click', downloadImages);
 document.getElementById('darkModeToggle').addEventListener('change', toggleDarkMode);
-document.getElementById('colorPicker').addEventListener('input', changeImageColor);
+document.getElementById('colorPicker').addEventListener('input', changeBackgroundColor);
 
 function handleFileSelect(event) {
   const files = event.target.files;
@@ -23,21 +23,18 @@ function handleFileSelect(event) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
-        const imageSize = document.getElementById('imageSize').value;
-        const newSize = parseInt(imageSize);
-
-        canvas.width = newSize;
-        canvas.height = newSize;
+        canvas.width = img.width;
+        canvas.height = img.height;
 
         ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.drawImage(img, 20, 20, newSize - 40, newSize - 40);
+        ctx.drawImage(img, 20, 20, img.width - 40, img.height - 40);
 
         const roundedCanvas = document.createElement('canvas');
         const roundedCtx = roundedCanvas.getContext('2d');
-        roundedCanvas.width = newSize;
-        roundedCanvas.height = newSize;
+        roundedCanvas.width = img.width;
+        roundedCanvas.height = img.height;
 
         roundedCtx.beginPath();
         roundedCtx.moveTo(20, 0);
@@ -70,8 +67,6 @@ function handleFileSelect(event) {
 }
 
 function downloadImages() {
-  console.log("Download button clicked"); // Debugging
-
   const images = document.querySelectorAll('.image-wrapper img');
   const zip = new JSZip();
 
@@ -84,47 +79,20 @@ function downloadImages() {
 
     ctx.drawImage(image, 0, 0);
 
-    const dataURL = canvas.toDataURL('image/png');
-
-    // Remove the beginning of the dataURL to get only the base64 encoded data
-    const base64Data = dataURL.split(',')[1];
-
-    zip.file(`image_${index + 1}.png`, base64Data, { base64: true });
+    zip.file(`image_${index + 1}.png`, canvas.toDataURL().split(',')[1], { base64: true });
   });
 
   zip.generateAsync({ type: 'blob' }).then(function(content) {
-    console.log("Zip generated"); // Debugging
-
     saveAs(content, 'images.zip');
-  }).catch(function(error) {
-    console.error("Error generating zip file:", error); // Debugging
   });
 }
-
 
 function toggleDarkMode() {
   const body = document.body;
   body.classList.toggle('dark-mode');
 }
 
-function changeImageColor() {
+function changeBackgroundColor() {
   const color = document.getElementById('colorPicker').value;
-  const images = document.querySelectorAll('.image-wrapper img');
-  const container = document.querySelector('.container');
-  container.style.backgroundColor = color;
-
-  images.forEach(image => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = image.width;
-    canvas.height = image.height;
-
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = 'destination-atop';
-    ctx.drawImage(image, 0, 0);
-
-    image.src = canvas.toDataURL();
-  });
+  document.body.style.backgroundColor = color;
 }
