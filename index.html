@@ -9,17 +9,15 @@
 <body>
   <div class="container">
     <h1 class="header">Image Background Tool</h1>
-    <label class="switch">
-      <input type="checkbox" id="darkModeToggle">
-      <span class="slider"></span>
-    </label>
-    <input type="file" id="fileInput" multiple>
+    <div class="tools">
+      <label for="fileInput" class="upload-btn">Choose Files</label>
+      <input type="file" id="fileInput" multiple>
+      <input type="color" id="colorPicker" value="#000000">
+      <label for="imageSize">Image Size (pixels):</label>
+      <input type="number" id="imageSize" value="200">
+      <button id="downloadButton">Download All Images</button>
+    </div>
     <div id="imageContainer"></div>
-    <label for="imageSize">Image Size (pixels):</label>
-    <input type="number" id="imageSize" value="200">
-    <label for="colorPicker">Background Color:</label>
-    <input type="color" id="colorPicker" value="#000000">
-    <button id="downloadButton">Download All Images</button>
     <p class="watermark">Made by KoohiiMC</p>
   </div>
   <script src="libs/jszip.min.js"></script>
