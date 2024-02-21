@@ -3,23 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Background Tool</title>
+  <title>ImgBg</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1 class="header">Image Background Tool</h1>
-    <div class="tools">
-      <label for="fileInput" class="upload-btn">Choose Files</label>
+    <h1 class="header">ImgBg</h1>
+    <p class="sub-header">Made by Koohii</p>
+
+    <div class="upload-btn-container">
+      <label for="fileInput" class="upload-btn">Select Images</label>
       <input type="file" id="fileInput" multiple>
-      <input type="color" id="colorPicker" value="#000000">
-      <label for="imageSize">Image Size (pixels):</label>
-      <input type="number" id="imageSize" value="200">
+    </div>
+
+    <div id="imageContainer" class="image-container"></div>
+
+    <div class="config">
+      <p class="config-text">Configuration</p>
+      <div class="config-item">
+        <label for="imageColor">Image Color:</label>
+        <input type="color" id="imageColor" value="#000000">
+      </div>
+      <div class="config-item">
+        <label for="backgroundColor">Background Color:</label>
+        <input type="color" id="backgroundColor" value="#ffffff">
+      </div>
+      <div class="config-item">
+        <label for="imageSize">Image Size:</label>
+        <input type="number" id="imageSize" placeholder="Enter size">
+      </div>
       <button id="downloadButton">Download All Images</button>
     </div>
-    <div id="imageContainer"></div>
-    <p class="watermark">Made by KoohiiMC</p>
+
+    <p class="watermark">Made by Koohii</p>
   </div>
+  
   <script src="libs/jszip.min.js"></script>
   <script src="libs/FileSaver.min.js"></script>
   <script src="script.js"></script>
