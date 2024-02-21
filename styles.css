@@ -12,17 +12,20 @@ body {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .header {
   color: #333;
-  text-align: center;
 }
 
-.tools {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.sub-header {
+  color: #888;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.upload-btn-container {
   margin-bottom: 20px;
 }
 
@@ -40,31 +43,27 @@ body {
   background-color: #0b7dda;
 }
 
-input[type="color"],
-input[type="number"] {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.config {
+  margin-bottom: 20px;
 }
 
-#downloadButton {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.config-item {
+  margin-bottom: 10px;
 }
 
-#downloadButton:hover {
-  background-color: #45a049;
+.config-text {
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 #imageContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.image-container {
+  margin-bottom: 20px;
 }
 
 .image-wrapper {
@@ -82,8 +81,20 @@ input[type="number"] {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
+#downloadButton {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#downloadButton:hover {
+  background-color: #45a049;
+}
+
 .watermark {
-  margin-top: 20px;
   color: #888;
-  text-align: center;
 }
