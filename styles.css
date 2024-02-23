@@ -14,8 +14,8 @@ body {
 }
 
 .imageWrapper img {
-  max-width: 256px;
-  max-height: 256px;
+  max-width: 100%;
+  max-height: 100%;
   border-radius: 8px;
   transition: transform 0.3s ease-in-out;
 }
