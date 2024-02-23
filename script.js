@@ -21,9 +21,16 @@ function handleFileSelect(event) {
 
         canvas.width = 256;
         canvas.height = 256;
+        
+        // Draw rounded rectangle background
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        roundedRect(ctx, 0, 0, canvas.width, canvas.height, 10);
+        ctx.fill();
+        
+        // Draw white image
         ctx.fillStyle = '#fff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, img.width * ratio, img.height * ratio);
+        ctx.fillRect(8, 8, canvas.width - 16, canvas.height - 16);
+        ctx.drawImage(img, 8, 8, (img.width * ratio) - 16, (img.height * ratio) - 16);
 
         const imageWrapper = document.createElement('div');
         imageWrapper.classList.add('imageWrapper');
@@ -47,4 +54,15 @@ function handleFileSelect(event) {
 
     reader.readAsDataURL(file);
   }
+}
+
+// Function to draw rounded rectangle
+function roundedRect(ctx, x, y, width, height, radius) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.arcTo(x + width, y, x + width, y + height, radius);
+  ctx.arcTo(x + width, y + height, x, y + height, radius);
+  ctx.arcTo(x, y + height, x, y, radius);
+  ctx.arcTo(x, y, x + width, y, radius);
+  ctx.closePath();
 }
