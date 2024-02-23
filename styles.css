@@ -1,59 +1,5 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  text-align: center;
-}
-
-.header {
-  color: #333;
-}
-
-.switch {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 10px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  background-color: #ccc;
-  border-radius: 34px;
-  transition: background-color 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  border-radius: 50%;
-  transition: transform 0.4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
 }
 
 #imageContainer {
@@ -62,39 +8,46 @@ input:checked + .slider:before {
   justify-content: center;
 }
 
-.image-wrapper {
+.imageWrapper {
   margin: 10px;
-  padding: 10px;
+  position: relative;
+}
+
+.imageWrapper img {
+  max-width: 256px;
+  max-height: 256px;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 10px;
+  border-radius: 8px;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.image-wrapper img {
-  max-width: 200px;
-  max-height: 200px;
-  border-radius: 10px;
+.overlay:hover {
+  opacity: 1;
 }
 
-#downloadButton {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #2196F3;
+.downloadLink {
   color: #fff;
-  border: none;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #333;
   border-radius: 5px;
-  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-#downloadButton:hover {
-  background-color: #0b7dda;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-}
-
-.watermark {
-  margin-top: 20px;
-  color: #aaa;
+.downloadLink:hover {
+  background-color: #555;
 }
